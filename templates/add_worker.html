@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Ajouter Ouvrier - Système de Présence QR{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-user-plus me-2"></i>Ajouter un Nouvel Ouvrier
+                </h3>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="matricule" class="form-label">
+                            <i class="fas fa-id-card me-1"></i>Matricule
+                        </label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="matricule" 
+                               name="matricule" 
+                               required 
+                               pattern="[A-Za-z0-9]+"
+                               title="Le matricule ne peut contenir que des lettres et des chiffres"
+                               placeholder="Ex: EMP001, OUVR123">
+                        <div class="form-text">Utilisez uniquement des lettres et des chiffres</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="name" class="form-label">
+                            <i class="fas fa-user me-1"></i>Nom Complet
+                        </label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="name" 
+                               name="name" 
+                               required 
+                               placeholder="Ex: Jean Dupont">
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-plus me-2"></i>Ajouter Ouvrier
+                        </button>
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-1"></i>Retour à l'Accueil
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Information:</strong> Après ajout, vous serez automatiquement redirigé vers la page du code QR de l'ouvrier pour l'imprimer.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

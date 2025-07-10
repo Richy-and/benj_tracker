@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Journal de Présence - Système de Présence QR{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>
+                <i class="fas fa-clipboard-list me-2"></i>Journal de Présence
+            </h2>
+        </div>
+
+        <!-- Date Filter -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="GET" class="row align-items-end">
+                    <div class="col-md-6">
+                        <label for="date" class="form-label">
+                            <i class="fas fa-calendar me-1"></i>Sélectionner une Date
+                        </label>
+                        <input type="date" 
+                               class="form-control" 
+                               id="date" 
+                               name="date" 
+                               value="{{ selected_date }}"
+                               max="{{ moment().format('YYYY-MM-DD') if moment else selected_date }}">
+                    </div>
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search me-1"></i>Filtrer
+                        </button>
+                        <button type="button" 
+                                class="btn btn-secondary ms-2" 
+                                onclick="document.getElementById('date').value='{{ moment().format('YYYY-MM-DD') if moment else selected_date }}'; this.closest('form').submit();">
+                            <i class="fas fa-calendar-day me-1"></i>Aujourd'hui
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Statistics Summary -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-2x mb-2"></i>
+                        <h4>{{ total_workers }}</h4>
+                        <p class="mb-0">Total Ouvriers</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-success text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-check-circle fa-2x mb-2"></i>
+                        <h4>{{ present_count }}</h4>
+                        <p class="mb-0">Présents</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-warning text-dark">
+                    <div class="card-body text-center">
+                        <i class="fas fa-times-circle fa-2x mb-2"></i>
+                        <h4>{{ total_workers - present_count }}</h4>
+                        <p class="mb-0">Absents</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance List -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-list me-2"></i>Présences du {{ selected_date }}
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if attendance_data %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>
+                                        <i class="fas fa-id-card me-1"></i>Matricule
+                                    </th>
+                                    <th>
+                                        <i class="fas fa-user me-1"></i>Nom
+                                    </th>
+                                    <th class="text-center">
+                                        <i class="fas fa-check-circle me-1"></i>Statut
+                                    </th>
+                                    <th class="text-center">
+                                        <i class="fas fa-clock me-1"></i>Heure d'Arrivée
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in attendance_data %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ record.matricule }}</strong>
+                                    </td>
+                                    <td>{{ record.name }}</td>
+                                    <td class="text-center">
+                                        {% if record.present %}
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check me-1"></i>Présent
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-times me-1"></i>Absent
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center">
+                                        {% if record.time %}
+                                            <strong>{{ record.time }}</strong>
+                                        {% else %}
+                                            <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Aucune donnée de présence</h5>
+                        <p class="text-muted">Aucun ouvrier n'est enregistré dans le système pour cette date.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-4 text-center">
+            <button onclick="window.print()" class="btn btn-primary">
+                <i class="fas fa-print me-1"></i>Imprimer le Rapport
+            </button>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary ms-2">
+                <i class="fas fa-home me-1"></i>Retour à l'Accueil
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Auto-submit form when date changes
+    document.getElementById('date').addEventListener('change', function() {
+        this.closest('form').submit();
+    });
+</script>
+{% endblock %}

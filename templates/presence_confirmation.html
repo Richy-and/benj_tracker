@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if success %}Présence Confirmée{% else %}Erreur de Présence{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-body text-center">
+                {% if success %}
+                    <div class="text-success mb-4">
+                        <i class="fas fa-check-circle fa-5x"></i>
+                    </div>
+                    <h2 class="text-success mb-3">Présence Confirmée !</h2>
+                    
+                    <div class="worker-info mb-4">
+                        <h4>{{ worker.name }}</h4>
+                        <p class="text-muted">
+                            <i class="fas fa-id-card me-1"></i>Matricule: {{ worker.matricule }}
+                        </p>
+                    </div>
+                    
+                    <div class="attendance-details mb-4">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <i class="fas fa-calendar text-primary"></i>
+                                        <h6 class="mt-2">Date</h6>
+                                        <strong>{{ date }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <i class="fas fa-clock text-primary"></i>
+                                        <h6 class="mt-2">Heure</h6>
+                                        <strong>{{ time }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-success">
+                        <i class="fas fa-thumbs-up me-2"></i>
+                        {{ message }}
+                    </div>
+                    
+                {% else %}
+                    <div class="text-danger mb-4">
+                        <i class="fas fa-times-circle fa-5x"></i>
+                    </div>
+                    <h2 class="text-danger mb-3">Erreur de Présence</h2>
+                    
+                    {% if worker %}
+                        <div class="worker-info mb-4">
+                            <h4>{{ worker.name }}</h4>
+                            <p class="text-muted">
+                                <i class="fas fa-id-card me-1"></i>Matricule: {{ worker.matricule }}
+                            </p>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        {{ message }}
+                    </div>
+                    
+                    <div class="mt-4">
+                        <p class="text-muted">
+                            Si le problème persiste, contactez votre superviseur ou l'administrateur du système.
+                        </p>
+                    </div>
+                {% endif %}
+                
+                <div class="mt-4">
+                    <p class="text-muted">
+                        <small>
+                            <i class="fas fa-info-circle me-1"></i>
+                            Cette page se fermera automatiquement dans quelques secondes.
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Auto-close page after 5 seconds
+    setTimeout(function() {
+        window.close();
+    }, 5000);
+    
+    // If window.close() doesn't work (some browsers), show a message
+    setTimeout(function() {
+        const body = document.querySelector('.card-body');
+        if (body) {
+            const closeMsg = document.createElement('div');
+            closeMsg.className = 'alert alert-info mt-3';
+            closeMsg.innerHTML = '<i class="fas fa-info-circle me-2"></i>Vous pouvez fermer cette page maintenant.';
+            body.appendChild(closeMsg);
+        }
+    }, 5500);
+</script>
+{% endblock %}

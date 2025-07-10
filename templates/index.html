@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil - Système de Présence QR{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="text-center mb-5">
+            <h1 class="display-4 text-primary">
+                <i class="fas fa-qrcode me-3"></i>Système de Présence QR
+            </h1>
+            <p class="lead text-muted">Gérez facilement la présence de vos ouvriers avec des codes QR</p>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-3x mb-3"></i>
+                        <h3>{{ worker_count }}</h3>
+                        <p class="card-text">Ouvriers Enregistrés</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-success text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-check-circle fa-3x mb-3"></i>
+                        <h3>{{ attendance_today }}</h3>
+                        <p class="card-text">Présences Aujourd'hui</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Cards -->
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-user-plus fa-4x text-primary mb-3"></i>
+                        <h5 class="card-title">Ajouter un Ouvrier</h5>
+                        <p class="card-text">Enregistrez un nouveau ouvrier et générez son code QR de présence</p>
+                        <a href="{{ url_for('add_worker') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i>Ajouter
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-4x text-info mb-3"></i>
+                        <h5 class="card-title">Gérer les Ouvriers</h5>
+                        <p class="card-text">Visualisez tous les ouvriers, leurs codes QR et gérez leurs informations</p>
+                        <a href="{{ url_for('view_workers') }}" class="btn btn-info">
+                            <i class="fas fa-eye me-1"></i>Voir Tous
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-clipboard-list fa-4x text-success mb-3"></i>
+                        <h5 class="card-title">Journal de Présence</h5>
+                        <p class="card-text">Consultez les présences quotidiennes et les statistiques détaillées</p>
+                        <a href="{{ url_for('attendance_log') }}" class="btn btn-success">
+                            <i class="fas fa-list me-1"></i>Consulter
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-info-circle fa-4x text-warning mb-3"></i>
+                        <h5 class="card-title">Instructions</h5>
+                        <p class="card-text">
+                            1. Ajoutez vos ouvriers<br>
+                            2. Imprimez leurs codes QR<br>
+                            3. Ils scannent pour marquer leur présence
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
