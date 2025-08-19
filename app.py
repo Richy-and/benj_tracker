@@ -28,10 +28,7 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_pre_ping": True,
 }
 
-# === INITIALISATION DB ===
-db.init_app(app)
-with app.app_context():
-    db.create_all()
+
 
 # === FILTRE POUR AFFICHAGE DES DATES ===
 @app.template_filter('dateformat')
