@@ -81,8 +81,9 @@ def worker_qr(matricule):
         flash('Ouvrier non trouvé', 'error')
         return redirect(url_for('view_workers'))
     
-    APP_BASE_URL = os.environ.get("APP_BASE_URL", request.url_root)
-    presence_url = request.url_root + f"presence/{matricule}"
+    base_url = os.environ.get("APP_BASE_URL", request.url_root)
+    presence_url = base_url.rstrip("/") + f"/presence/{matricule}"
+
     qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
     qr.add_data(presence_url)
     qr.make(fit=True)
